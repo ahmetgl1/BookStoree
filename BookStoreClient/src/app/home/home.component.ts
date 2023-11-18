@@ -39,7 +39,6 @@ export class HomeComponent {
       .subscribe(res => {
         this.books = res
       })
-    console.log(this.books);
 
   }
 

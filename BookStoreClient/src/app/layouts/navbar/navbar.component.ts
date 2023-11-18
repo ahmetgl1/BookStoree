@@ -9,20 +9,34 @@ import { ShoppingCartService } from 'src/app/services/shopping-cart.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
- 
+
+  language: string = ""
 
 
 
+  constructor(private translate: TranslateService, public shopping: ShoppingCartService) {
 
-  constructor(private translate: TranslateService , public shopping:ShoppingCartService) {
 
-    translate.setDefaultLang('en');
+    if (localStorage.getItem('language')) {
+      this.language = localStorage.getItem('language') as string
+
+    }  
+      translate.setDefaultLang(this.language)
+    
+
+
 
   }
 
   switchLanguage(event: any) {
+    localStorage.setItem('language', event.target.value)
+
     this.translate.setDefaultLang(event.target.value);
-    console.log(event.target.value)
+    this.language = event.target.value
+    this.translate.use(this.language)
+    location.reload()
+    console.log(this.language);
+    
   }
 
 

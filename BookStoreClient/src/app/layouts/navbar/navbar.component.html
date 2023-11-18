@@ -12,7 +12,7 @@
                 </li>
             </ul>
 
-            <select  (change)="switchLanguage($event)">
+            <select [(ngModel)]="language" (change)="switchLanguage($event)">
                 <option value="en">English</option>
                 <option value="tr">Turkçe</option>
 

@@ -13,10 +13,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CategoryPipe } from './pipes/category.pipe';
 import { IconControlDirective } from './directives/icon-control.directive';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import  Swal  from 'sweetalert2';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
-
-
+import { TrCurrencyPipe } from 'tr-currency';
 
  
 export function HttpLoaderFactory(http: HttpClient) {
@@ -38,6 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    TrCurrencyPipe,
     FormsModule,
     SweetAlert2Module,
     InfiniteScrollModule,

@@ -13,45 +13,64 @@
     </div>
 </div>
 
+<div class="alert alert-danger text-center" *ngIf="shopping.count == 0">
+    <h1>Sepette Ürününüz Bulunmamaktadır</h1>
+</div>
 
 
-
-<div class="row mt-3">
+<div class="row mt-3" *ngIf="shopping.count > 0">
     <div class="col-lg-9 col-12">
         <div class="card">
-            <div class="row">
-                <div class="col-4">
-                    <img src="" alt="">
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        Ürün Adı:
-                    </div>
-                    <div class="form-group">
-                        Yazar: 
-                    </div>
-                    <div class="form-group">
-                        Özet :
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <h4>25.000</h4>
-                        <i class="fa fa-trash"></i>
-                    </div>
-                    
+            <div class="card" *ngFor="let shop of shopping.shoppingCarts let i = index">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card image">
+                            <img [src]="shop.coverImageUrl" alt="">
 
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            Ürün Adı: {{shop.title}}
+                        </div>
+                        <div class="form-group">
+                            Yazar: {{shop.author}}
+                        </div>
+                        <div class="form-group">
+                            Özet : {{shop.summary}}
+                        </div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <div class="form-group">
+                            <h4 *ngIf="language !== 'tr' ">
+                                {{shop.price.value | currency: '':'':'1.2-2'}}
+                            </h4>
+                            <h4 *ngIf="language === 'tr' ">
+                                {{shop.price.value | trCurrency}}
+                            </h4>
+
+                            <i class="fa fa-trash" (click)="shopping.removeByIndex(i)"></i>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-
         </div>
 
     </div>
-    <div class="col-lg-3 col-12 card ">
-        <div class="form-group">
-            <h1 class="alert  alert-danger text-center mt-3">25.000</h1>
+    <div class="col-lg-3 col-12">
+        <div class="card mt-3" *ngFor="let p of shopping.prices">
+            <div class="form-group">
+                <h1 class="alert alert-danger text-center mt-3" *ngIf="language === 'tr' ">
+                    {{p.value | trCurrency}} {{p.currency }}
+                </h1>
+                <h1 class="alert alert-danger text-center mt-3" *ngIf="language !== 'tr' ">
+                    {{p.value | currency: '': '': '1.2-2'}} {{p.currency}}
+                </h1>
+            </div>
         </div>
         <div class="form-group">
+            <!--ödeme click ile eklenecek !-->
             <button class="btn btn-success w-100">Ödeme Yap</button>
         </div>
     </div>

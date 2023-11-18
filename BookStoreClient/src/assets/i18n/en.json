@@ -5,5 +5,11 @@
     "addInBasket": "Adding in Shopping Cart",
     "shoppingCartPage": "My Shopping",
     "home": "Home",
-    "shopping": "My Shopping"
+    "shopping": "My Shopping",
+    "remove": {
+      
+      "doYouWantToDeleted": "Do You Want To Delete  ?",
+      "confirmBtn": "Yes",
+      "cancelBtn": "No"
+    }
   }

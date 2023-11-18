@@ -5,6 +5,12 @@
     "addInBasket": "Sepete Eklendi",
     "shoppingCartPage": "Sepetim",
     "home": "Ana Sayfa",
-    "shopping": "Sepetim"
+    "shopping": "Sepetim",
+    "remove": {
+      
+      "doYouWantToDeleted": "Silmek İstediğinizden Emin Misiniz ?",
+      "confirmBtn": "Evet",
+      "cancelBtn": "Vazgeç"
+    }
 
   }
