@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { RequestModel } from '../models/request-model';
-import { BookModel } from '../models/book.model';
+import { RequestModel } from '../../app/models/request-model';
+import { BookModel } from '../../app/models/book.model';
 import { TranslateService } from '@ngx-translate/core';
-import { ShoppingCartService } from '../services/shopping-cart.service';
-import { SwalService } from '../services/swal.service';
+import { ShoppingCartService } from '../../app/services/shopping-cart.service';
+import { SwalService } from '../../app/services/swal.service';
 
 @Component({
   selector: 'app-home',

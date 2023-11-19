@@ -16,12 +16,21 @@ public class AppDbContext: DbContext
     public DbSet<Book> Books { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<BookCategory> BookCategories { get; set; }
+    public DbSet<Orders> orders { get; set; }
 
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<BookCategory>().HasKey(o => new { o.BookId, o.CategoryId });
+
+        modelBuilder.Entity<Orders>().OwnsOne(o => o.Price, price =>
+        {
+            price.Property(p => p.Currency).HasMaxLength(5);
+            price.Property(price => price.Value).HasColumnName("money");
+
+        });
+
 
 
 
@@ -53,18 +62,4 @@ public class AppDbContext: DbContext
 
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

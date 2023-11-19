@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeComponent } from './home/home.component';
-import { NavbarComponent } from './layouts/navbar/navbar.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormsModule } from '@angular/forms';

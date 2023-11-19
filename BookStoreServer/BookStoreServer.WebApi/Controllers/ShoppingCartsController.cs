@@ -1,4 +1,6 @@
-﻿using BookStoreServer.WebApi.Dtos;
+﻿using BookStoreServer.WebApi.Context;
+using BookStoreServer.WebApi.Dtos;
+using BookStoreServer.WebApi.Models;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
@@ -11,6 +13,9 @@ namespace BookStoreServer.WebApi.Controllers;
 [ApiController]
 public sealed class ShoppingCartsController : ControllerBase
 {
+
+    private readonly AppDbContext _appDbContext;
+
 
     [HttpPost]
     public IActionResult Payment(PaymentDto requestDto)
@@ -27,10 +32,36 @@ public sealed class ShoppingCartsController : ControllerBase
         commision = total * 1.2m / 100;
 
 
+        Currency currency = Currency.TRY;
+        string requestCurrency = requestDto.Books[0]?.Price.Currency;
 
 
+        if(!string.IsNullOrEmpty(requestCurrency) )
+        {
 
 
+            switch (requestCurrency)
+            {
+                case "₺":
+
+                    currency = Currency.TRY;
+                    break;
+                case "$":
+
+                    currency = Currency.USD;
+                    break;
+
+                case "£":
+
+                    currency = Currency.EUR;
+                    break;
+
+                default:
+                    throw new Exception("Para Birimi Bulunamadı");
+                    break;
+            }
+
+        }
 
 
 
@@ -41,91 +72,81 @@ public sealed class ShoppingCartsController : ControllerBase
 
         CreatePaymentRequest request = new CreatePaymentRequest();
         request.Locale = Locale.TR.ToString();
-        request.ConversationId = Guid.NewGuid().ToString(); //birden fazla aynı isteği engellemek için oluşturulan ID değer
+        request.ConversationId = Orders.SetNewOrderNumber(); //birden fazla aynı isteği engellemek için oluşturulan ID değer
         request.Price = total.ToString(); //ödeme tutarı
         request.PaidPrice = commision.ToString(); // komisyon ile ödeme tutarı toplamı 
-        request.Currency = Currency.TRY.ToString();
+        request.Currency = currency.ToString();
         request.Installment = 1;
         request.BasketId = "B67832";
         request.PaymentChannel = PaymentChannel.WEB.ToString();
         request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
 
-        PaymentCard paymentCard = new PaymentCard();
-        paymentCard.CardHolderName = "John Doe";
-        paymentCard.CardNumber = "5528790000000008";
-        paymentCard.ExpireMonth = "12";
-        paymentCard.ExpireYear = "2030";
-        paymentCard.Cvc = "123";
-        paymentCard.RegisterCard = 0;
+        PaymentCard paymentCard = requestDto.PaymentCard;
         request.PaymentCard = paymentCard;
 
-        Buyer buyer = new Buyer();
-        buyer.Id = "BY789";
-        buyer.Name = "John";
-        buyer.Surname = "Doe";
-        buyer.GsmNumber = "+905350000000";
-        buyer.Email = "email@email.com";
-        buyer.IdentityNumber = "74300864791";
-        buyer.LastLoginDate = "2015-10-05 12:43:35";
-        buyer.RegistrationDate = "2013-04-21 15:12:09";
-        buyer.RegistrationAddress = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
-        buyer.Ip = "85.34.78.112";
-        buyer.City = "Istanbul";
-        buyer.Country = "Turkey";
-        buyer.ZipCode = "34732";
+        Buyer buyer = requestDto.Buyer;
+        buyer.Id = Guid.NewGuid().ToString();
         request.Buyer = buyer;
 
-        Address shippingAddress = new Address();
-        shippingAddress.ContactName = "Jane Doe";
-        shippingAddress.City = "Istanbul";
-        shippingAddress.Country = "Turkey";
-        shippingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
-        shippingAddress.ZipCode = "34742";
+        Address shippingAddress = requestDto.shippingAddress;
         request.ShippingAddress = shippingAddress;
 
-        Address billingAddress = new Address();
-        billingAddress.ContactName = "Jane Doe";
-        billingAddress.City = "Istanbul";
-        billingAddress.Country = "Turkey";
-        billingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
-        billingAddress.ZipCode = "34742";
+        Address billingAddress = requestDto.billingAddress;
         request.BillingAddress = billingAddress;
 
+
         List<BasketItem> basketItems = new List<BasketItem>();
-        BasketItem firstBasketItem = new BasketItem();
-        firstBasketItem.Id = "BI101";
-        firstBasketItem.Name = "Binocular";
-        firstBasketItem.Category1 = "Collectibles";
-        firstBasketItem.Category2 = "Accessories";
-        firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-        firstBasketItem.Price = "0.3";
-        basketItems.Add(firstBasketItem);
+        foreach(var book in requestDto.Books)
+        {
+            BasketItem item = new BasketItem();
+            item.Id = book.Id.ToString();
+            item.Name = book.Title;
+            item.ItemType = BasketItemType.PHYSICAL.ToString();
+            item.Price = book.Price.Value.ToString();
 
-        BasketItem secondBasketItem = new BasketItem();
-        secondBasketItem.Id = "BI102";
-        secondBasketItem.Name = "Game code";
-        secondBasketItem.Category1 = "Game";
-        secondBasketItem.Category2 = "Online Game Items";
-        secondBasketItem.ItemType = BasketItemType.VIRTUAL.ToString();
-        secondBasketItem.Price = "0.5";
-        basketItems.Add(secondBasketItem);
+            basketItems.Add(item);
 
-        BasketItem thirdBasketItem = new BasketItem();
-        thirdBasketItem.Id = "BI103";
-        thirdBasketItem.Name = "Usb";
-        thirdBasketItem.Category1 = "Electronics";
-        thirdBasketItem.Category2 = "Usb / Cable";
-        thirdBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-        thirdBasketItem.Price = "0.2";
-        basketItems.Add(thirdBasketItem);
+        }
         request.BasketItems = basketItems;
-
+      
+    
         Payment payment = Iyzipay.Model.Payment.Create(request, options);
 
 
+        if (payment.Status == "success")
+        {
+
+            List<Orders> orders = new();
+
+            foreach (var book in requestDto.Books)
+            {
+                Orders order = new()
+                {
+
+                    OrderNumber = request.BasketId,
+                    BookId = book.Id,
+                    Price = new ValueObjects.Money(book.Price.Value, book.Price.Currency),
+                    PaymentDate = DateTime.Now,
+                    PaymentType = "Credit Card",
+                    PaymentNumber = payment.PaymentId
+                    
+                };
+                    orders.Add(order);
+                
+            }
 
 
-        return Ok();
+            _appDbContext.AddRange(orders);
+            _appDbContext.SaveChanges();
+
+
+            return NoContent();
+
+        }
+        else
+        {
+            return BadRequest(payment.ErrorMessage);
+        }
 
     }
 

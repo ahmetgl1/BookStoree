@@ -11,6 +11,11 @@
       "doYouWantToDeleted": "Silmek İstediğinizden Emin Misiniz ?",
       "confirmBtn": "Evet",
       "cancelBtn": "Vazgeç"
+    },
+    
+    "payment" :{
+      "title": "Ödeme Sayfası"
+
     }
 
   }

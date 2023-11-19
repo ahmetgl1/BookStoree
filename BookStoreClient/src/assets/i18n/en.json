@@ -11,5 +11,11 @@
       "doYouWantToDeleted": "Do You Want To Delete  ?",
       "confirmBtn": "Yes",
       "cancelBtn": "No"
-    }
+    },
+    
+      "payment" :{
+        "title": "Payment Page"
+
+      }
+    
   }
