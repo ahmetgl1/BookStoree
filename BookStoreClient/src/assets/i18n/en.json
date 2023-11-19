@@ -1,21 +1,54 @@
 {
-    "categories": "Categories",
-    "search": "Enter value to search for ..",
-    "allCategories": "All Categories",
-    "addInBasket": "Adding in Shopping Cart",
-    "shoppingCartPage": "My Shopping",
-    "home": "Home",
-    "shopping": "My Shopping",
-    "remove": {
-      
-      "doYouWantToDeleted": "Do You Want To Delete  ?",
-      "confirmBtn": "Yes",
-      "cancelBtn": "No"
+  "categories": "Categories",
+  "search": "Enter value to search for ..",
+  "allCategories": "All Categories",
+  "addInBasket": "Adding in Shopping Cart",
+  "shoppingCartPage": "My Shopping",
+  "home": "Home",
+  "shopping": "My Shopping",
+  "remove": {
+    "doYouWantToDeleted": "Do You Want To Delete  ?",
+    "confirmBtn": "Yes",
+    "cancelBtn": "No"
+  },
+  "payment": {
+    "title": "Payment Page",
+    "information": "Payment information",
+    "next": "Next",
+    "back": "Back",
+    "complete": "Complete",
+    "buyer": {
+      "title": "Buyer Information",
+      "identityNumber": "Identity Number",
+      "name": "Name",
+      "email": "Email",
+      "surname": "Surname",
+      "gsmNumber": "Contact Number"
     },
     
-      "payment" :{
-        "title": "Payment Page"
-
-      }
-    
+    "address": {
+      "title": "Shipping Information",
+      "information": "Address information",
+      "country": "Country",
+      "cities": "City",
+      "zipcode": "Zip Code",
+      "contactName": "Contact Name",
+      "description": "Description",
+      "isSameAddress": "Same Address as My Shipping Address "
+    },
+    "billing": {
+      "title": "Billing Information",
+      "information": "Address information",
+      "country": "Country",
+      "cities": "City",
+      "zipcode": "Zip Code",
+      "contactName": "Contact Name",
+      "description": "Description"
+      
+    }
+  },
+  "buyer": {
+    "information": "Buyer information"
   }
+  
+}

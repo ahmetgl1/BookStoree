@@ -1,21 +1,49 @@
 {
-    "categories": "Kategoriler",
-    "search":   "Aranacak Değer Giriniz",
-    "allCategories": "Tüm Kategoriler",
-    "addInBasket": "Sepete Eklendi",
-    "shoppingCartPage": "Sepetim",
-    "home": "Ana Sayfa",
-    "shopping": "Sepetim",
-    "remove": {
-      
-      "doYouWantToDeleted": "Silmek İstediğinizden Emin Misiniz ?",
-      "confirmBtn": "Evet",
-      "cancelBtn": "Vazgeç"
+  "categories": "Kategoriler",
+  "search": "Aranacak Değer Giriniz",
+  "allCategories": "Tüm Kategoriler",
+  "addInBasket": "Sepete Eklendi",
+  "shoppingCartPage": "Sepetim",
+  "home": "Ana Sayfa",
+  "shopping": "Sepetim",
+  "remove": {
+    "doYouWantToDeleted": "Silmek İstediğinizden Emin Misiniz ?",
+    "confirmBtn": "Evet",
+    "cancelBtn": "Vazgeç"
+  },
+  "payment": {
+    "title": "Ödeme Sayfası",
+    "information": "Ödeme Bilgisi",
+    "next": "İleri",
+    "back": "Geri",
+    "complete": "Tamamla",
+    "buyer": {
+      "information": "Alıcı Bilgisi",
+      "title": "Alıcı Bilgileri",
+      "identityNumber": "Tc Kimlik",
+      "name": "İsim",
+      "email": "Email",
+      "surname": "Soyisim",
+      "gsmNumber": "İletişim Numarası"
     },
-    
-    "payment" :{
-      "title": "Ödeme Sayfası"
-
+    "address": {
+      "title": "Gönderim Adresi",
+      "information": "Address Bilgileri",
+      "country": "Ülke",
+      "cities": "Şehir",
+      "zipcode": "Posta Kodu",
+      "contactName": "İletişim İsmi ",
+      "description": "Açık Adres",
+      "isSameAddress": "Gönderim Adresim İle Aynı Adres "
+    },
+    "billing": {
+      "title": "Fatura Bilgileri",
+      "information": "Address Bilgileri",
+      "country": "Ülke",
+      "cities": "Şehir",
+      "zipcode": "Posta Kodu",
+      "contactName": "İletişim İsmi ",
+      "description": "Açık Adres"
     }
-
   }
+}

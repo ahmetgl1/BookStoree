@@ -69,28 +69,319 @@
                 </h1>
             </div>
             <div class="form-group">
-                <!--ödeme click ile eklenecek !-->
-                <button class="btn btn-success w-100"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="shopping.payment(p.currency)">Ödeme Yap</button>
+
+                <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#paymentModel"
+                    (click)="shopping.payment(p.currency)">Ödeme Yap</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="paymentModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="paymentModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">{{'payment.title' | translate}}</h1>
+                <h1 class="modal-title fs-5" id="paymentModelLabel">{{'payment.title' | translate}}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link " [ngClass]="selectedTabs ===1 ? 'active': ''" (click)="changeTab(1)">
+                            {{'buyer.information' | translate}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="selectedTabs ===2 ? 'active': ''" (click)="changeTab(2)">
+                            {{'address.information' | translate}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [ngClass]="selectedTabs ===3 ? 'active': ''" (click)="changeTab(3)">
+                            {{'payment.information' | translate}}
+                        </a>
+                    </li>
+                </ul>
+
+                <!--buyer-->
+                <div *ngIf="selectedTabs ===1">
+
+                    <form #buyerForm="ngForm" autocomplete="off">
+                        <h4 class="text-center">{{"payment.buyer.title" | translate}}</h4>
+                        <div class="col-6">
+
+                            <div class="form-group">
+                                <label for=" identityNumber">{{"payment.buyer.identityNumber" | translate}}</label>
+                                <input type="text" maxlength="11" class="form-control"
+                                    [(ngModel)]="request.buyer.identityNumber" name="buyerIdentityNumber">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="name">{{"payment.buyer.name" | translate}}</label>
+                                    <input type="text" class="form-control" [(ngModel)]="request.buyer.name"
+                                        name="buyerName">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="surname">{{"payment.buyer.surname" | translate}}</label>
+                                    <input type="surname" class="form-control" [(ngModel)]="request.buyer.surname"
+                                        name="buyerSurname">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="email">{{"payment.buyer.email" | translate}}</label>
+                                    <input type="email" class="form-control" [(ngModel)]="request.buyer.email"
+                                        name="buyerEmail">
+                                </div>
+                            </div>
+                            <div class="col-6">
+
+                                <div class="form-group">
+                                    <label for="gsmNumber">{{"payment.buyer.gsmNumber" | translate}}</label>
+                                    <input type="tel" class="form-control" [(ngModel)]="request.buyer.gsmNumber"
+                                        name="buyerGsmNumber">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </form>
+                </div>
+                <!--buyer-->
+
+                <!--address-->
+                <div *ngIf="selectedTabs ==2">
+                    <div class="title alert alert-info">
+                        <h4 class="text-center">{{"payment.address.title" | translate}}</h4>
+                    </div>
+                    <form #addressForm="ngForm" autocomplete="off">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="country">{{"payment.address.country" | translate}}</label>
+                                    <select name="shippingCountry" [(ngModel)]="request.shippingAddress.country"
+                                        class="form-control">
+                                        <option *ngFor="let c of countries">{{c}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="cities">{{"payment.address.cities" | translate}}</label>
+                                    <select name="shippingCities" [(ngModel)]="request.shippingAddress.city"
+                                        class="form-control">
+                                        <option *ngFor="let c of cities">{{c}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="zipCode">{{"payment.address.zipcode" | translate}}</label>
+                                    <input type="text" class="form-control"
+                                        [(ngModel)]="request.shippingAddress.zipCode" name="shippingzipCode">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="contactName">{{"payment.address.contactName" | translate}}</label>
+                                    <input type="text" class="form-control"
+                                        [(ngModel)]="request.shippingAddress.contactName" name="shippingContactName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="description">{{"payment.address.description" | translate}}</label>
+                                    <textarea type="text" class="form-control"
+                                        [(ngModel)]="request.shippingAddress.description"
+                                        name="shippingDescription"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+
+                </div>
+                <!--address-->
+
+                <!--billingaddress-->
+                <div *ngIf="selectedTabs ==2 && this.isSameAddress === false">
+                    <div class="title  alert alert-info">
+                        <h4 class="text-center">{{"payment.billing.title" | translate}}</h4>
+                    </div>
+                    <form #billingaddressForm="ngForm" autocomplete="off">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="country">{{"payment.billing.country" | translate}}</label>
+                                    <select name="billingCountry" [(ngModel)]="request.billingAddress.country"
+                                        class="form-control">
+                                        <option *ngFor="let c of countries">{{c}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="cities">{{"payment.billing.cities" | translate}}</label>
+                                    <select name="billingCities" [(ngModel)]="request.billingAddress.city"
+                                        class="form-control">
+                                        <option *ngFor="let c of cities">{{c}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="zipCode">{{"payment.billing.zipcode" | translate}}</label>
+                                    <input type="text" class="form-control" [(ngModel)]="request.billingAddress.zipCode"
+                                        name="billingzipCode">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="contactName">{{"payment.billing.contactName" | translate}}</label>
+                                    <input type="text" class="form-control"
+                                        [(ngModel)]="request.billingAddress.contactName" name="billingContactName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="description">{{"payment.billing.description" | translate}}</label>
+                                    <textarea type="text" class="form-control"
+                                        [(ngModel)]="request.billingAddress.description"
+                                        name="billingDescription"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--checkbox-->
+
+                    <!--hata düzeltilecek !!!!!-->
+                    <div class="form-check form-switch mt-3">
+                        <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isSameAddress"
+                            (change)="changeIsSame()" name="isSameAddress">
+
+                        <label class="form-check-label" for="isSameAddress">{{"payment.address.isSameAddress" |
+                            translate}}</label>
+                    </div>
+                    <!--checkbox-->
+                </div>
+                <!--billingaddress-->
+
+
+
+
+                <!--payment-->
+                <div *ngIf="selectedTabs ===3">
+
+                    <form #paymentForm="ngForm" autocomplete="off">
+                        <div class="form-group">
+                            <label for="cardholderName">{{"buyer.credicart.cardholderName" | translate}}</label>
+                            <input type="text" class="form-control" [(ngModel)]="request.paymentCard.cardHolderName"
+                                name="cardholderName">
+                        </div>
+                        <div class="form-group">
+                            <label for="cardnumber">{{"buyer.credicart.cartNumber" | translate}}</label>
+
+                            <div class="row">
+                                <div class="col-3">
+                                    <input type="text" maxlength="4" class="form-control" name="cartNumber1"
+                                        [(ngModel)]="cartNumber1">
+
+                                </div>
+                                <div class="col-3">
+                                    <input type="text"  maxlength="4" class="form-control" name="cartNumber2"
+                                        [(ngModel)]="request.paymentCard.cardHolderName">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" maxlength="4" class="form-control" name="cartNumber3"
+                                        [(ngModel)]="request.paymentCard.cardHolderName">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" maxlength="4" class="form-control" name="cartNumber4"
+                                        [(ngModel)]="request.paymentCard.cardHolderName">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="expireMonth">{{"buyer.credicart.expireMonth" | translate}}</label>
+                                        <input type="text" class="form-control" name="expireMounth"
+                                        [(ngModel)]="request.paymentCard.expireMonth">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="expireYear">{{"buyer.credicart.expireYear" | translate}}</label>
+                                        <input type="text" class="form-control" name="expireYear"
+                                        [(ngModel)]="request.paymentCard.expireYear">
+                                    </div>
+
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="cvc">{{"buyer.credicart.cvc" | translate}}</label>
+                                        <input type="text" class="form-control" name="cvc"
+                                        [(ngModel)]="request.paymentCard.cvc">
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </form>
+
+                </div>
+                <!--payment-->
+
+
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+                <button type="button" class="btn btn-danger" *ngIf="selectedTabs >1"
+                    (click)="changeTab(this.selectedTabs-1)">{{'payment.back' | translate}}</button>
+                <button type="button" class="btn btn-primary" *ngIf="selectedTabs <3"
+                    (click)="changeTab(this.selectedTabs+1)">{{'payment.next' | translate}}</button>
+                <button type="button" class="btn btn-success" *ngIf="selectedTabs ===3">{{'payment.complete' |
+                    translate}}</button>
+
             </div>
         </div>
     </div>

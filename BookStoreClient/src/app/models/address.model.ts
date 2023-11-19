@@ -6,7 +6,7 @@ export class AddresModel{
 
   contactName:string =""
 
-  city:string=""
+  city:string="İstanbul"
 
-  country:string =""
+  country:string ="Türkiye"
 }
