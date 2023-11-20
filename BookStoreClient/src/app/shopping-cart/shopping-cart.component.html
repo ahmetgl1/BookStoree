@@ -70,8 +70,8 @@
             </div>
             <div class="form-group">
 
-                <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#paymentModel"
-                    (click)="shopping.payment(p.currency)">Ödeme Yap</button>
+                <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#paymentModel" (click)="setSelectedCurrencyPayment(p.currency)">Ödeme
+                    Yap</button>
             </div>
         </div>
     </div>
@@ -84,7 +84,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="paymentModelLabel">{{'payment.title' | translate}}</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="closeBtnPaymentModal" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
@@ -301,70 +301,53 @@
                         </div>
                         <div class="form-group">
                             <label for="cardnumber">{{"buyer.credicart.cartNumber" | translate}}</label>
-
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-2">
                                     <input type="text" maxlength="4" class="form-control" name="cartNumber1"
                                         [(ngModel)]="cartNumber1">
 
                                 </div>
-                                <div class="col-3">
-                                    <input type="text"  maxlength="4" class="form-control" name="cartNumber2"
-                                        [(ngModel)]="request.paymentCard.cardHolderName">
+                                <div class="col-2">
+                                    <input type="text" maxlength="4" class="form-control" name="cartNumber2"
+                                        [(ngModel)]="cartNumber2">
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <input type="text" maxlength="4" class="form-control" name="cartNumber3"
-                                        [(ngModel)]="request.paymentCard.cardHolderName">
+                                        [(ngModel)]="cartNumber3">
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <input type="text" maxlength="4" class="form-control" name="cartNumber4"
-                                        [(ngModel)]="request.paymentCard.cardHolderName">
+                                        [(ngModel)]="cartNumber4">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-4">
+                                <!--expireMonth-->
+                                <div class="col-3">
                                     <div class="form-group">
-                                        <label for="expireMonth">{{"buyer.credicart.expireMonth" | translate}}</label>
-                                        <input type="text" class="form-control" name="expireMounth"
-                                        [(ngModel)]="request.paymentCard.expireMonth">
+                                        <label for="expireMonth">{{"buyer.credicart.expireMonth" |
+                                            translate}}</label>
+                                        <input type="text" maxlength="2" class="form-control" name="expireMonth"
+                                            [(ngModel)]="request.paymentCard.expireMonth">
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="form-group">
-                                        <label for="expireYear">{{"buyer.credicart.expireYear" | translate}}</label>
-                                        <input type="text" class="form-control" name="expireYear"
-                                        [(ngModel)]="request.paymentCard.expireYear">
+                                        <label for="expireYear">{{"buyer.credicart.expireYear" |
+                                            translate}}</label>
+                                        <input type="text" maxlength="4" class="form-control" name="expireYear"
+                                            [(ngModel)]="request.paymentCard.expireYear">
                                     </div>
-
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label for="cvc">{{"buyer.credicart.cvc" | translate}}</label>
-                                        <input type="text" class="form-control" name="cvc"
-                                        [(ngModel)]="request.paymentCard.cvc">
+                                        <input type="text" maxlength="3" class="form-control" name="cvc"
+                                            [(ngModel)]="request.paymentCard.cvc">
                                     </div>
                                 </div>
                             </div>
 
-
-
-
-
-
                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     </form>
 
@@ -379,7 +362,8 @@
                     (click)="changeTab(this.selectedTabs-1)">{{'payment.back' | translate}}</button>
                 <button type="button" class="btn btn-primary" *ngIf="selectedTabs <3"
                     (click)="changeTab(this.selectedTabs+1)">{{'payment.next' | translate}}</button>
-                <button type="button" class="btn btn-success" *ngIf="selectedTabs ===3">{{'payment.complete' |
+                <button type="button" (click)="payment()" class="btn btn-success"
+                    *ngIf="selectedTabs ===3">{{'payment.complete' |
                     translate}}</button>
 
             </div>

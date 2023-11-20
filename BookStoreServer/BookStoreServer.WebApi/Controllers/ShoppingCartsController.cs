@@ -14,8 +14,7 @@ namespace BookStoreServer.WebApi.Controllers;
 public sealed class ShoppingCartsController : ControllerBase
 {
 
-    private readonly AppDbContext _appDbContext;
-
+  
 
     [HttpPost]
     public IActionResult Payment(PaymentDto requestDto)
@@ -29,7 +28,7 @@ public sealed class ShoppingCartsController : ControllerBase
             total += book.Price.Value;
             
         }
-        commision = total * 1.2m / 100;
+        commision = total;
 
 
         Currency currency = Currency.TRY;
@@ -98,7 +97,11 @@ public sealed class ShoppingCartsController : ControllerBase
         List<BasketItem> basketItems = new List<BasketItem>();
         foreach(var book in requestDto.Books)
         {
+            
             BasketItem item = new BasketItem();
+
+            item.Category1 = "Book";
+            item.Category2 = "Book";
             item.Id = book.Id.ToString();
             item.Name = book.Title;
             item.ItemType = BasketItemType.PHYSICAL.ToString();
@@ -122,7 +125,7 @@ public sealed class ShoppingCartsController : ControllerBase
             {
                 Orders order = new()
                 {
-
+                   
                     OrderNumber = request.BasketId,
                     BookId = book.Id,
                     Price = new ValueObjects.Money(book.Price.Value, book.Price.Currency),
@@ -135,6 +138,7 @@ public sealed class ShoppingCartsController : ControllerBase
                 
             }
 
+            AppDbContext _appDbContext = new();
 
             _appDbContext.AddRange(orders);
             _appDbContext.SaveChanges();

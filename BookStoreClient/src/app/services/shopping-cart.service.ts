@@ -3,6 +3,7 @@ import { SwalService } from './swal.service';
 import { forkJoin } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+import { PaymentModel } from '../models/payment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,16 @@ export class ShoppingCartService {
   count: number = 0
   total: number = 0
 
-  constructor(private swal: SwalService ,
-              private translate: TranslateService,
-              private http: HttpClient ) {
+  constructor(private swal: SwalService,
+    private translate: TranslateService,
+    private http: HttpClient) {
+
+    this.checkLocalStorageForShoppingCart()
+    this.totalCalc()
+  }
+
+
+  checkLocalStorageForShoppingCart() {
 
     if (localStorage.getItem('shoppingCarts')) {
 
@@ -27,8 +35,9 @@ export class ShoppingCartService {
       }
 
     }
-    this.totalCalc()
+
   }
+
 
   totalCalc() {
 
@@ -61,38 +70,38 @@ export class ShoppingCartService {
 
   removeByIndex(index: number) {
 
-forkJoin({
+    forkJoin({
 
-  douYouWantToDeleted: this.translate.get("remove.doYouWantToDeleted"),
-  confirmBtn: this.translate.get("remove.cancelBtn"),
-  cancelBtn: this.translate.get("remove.confirmBtn")
+      douYouWantToDeleted: this.translate.get("remove.doYouWantToDeleted"),
+      confirmBtn: this.translate.get("remove.cancelBtn"),
+      cancelBtn: this.translate.get("remove.confirmBtn")
 
-}).subscribe(res =>{
+    }).subscribe(res => {
 
 
-  this.swal.callSwal(res.douYouWantToDeleted, res.confirmBtn , res.cancelBtn ,()=>{
-  
-    
+      this.swal.callSwal(res.douYouWantToDeleted, res.confirmBtn, res.cancelBtn, () => {
+
+
         this.shoppingCarts.splice(index, 1)
         localStorage.setItem('shoppingCarts', JSON.stringify(this.shoppingCarts))
         this.count = this.shoppingCarts.length
         this.totalCalc()
-  })
+      })
 
-})  
+    })
 
- 
+
 
   }
 
-  payment(currency: string){
+  payment(data: PaymentModel, callBack: (res: any) => void) {
 
-const newList = this.shoppingCarts.filter(o => o.currency == currency)
 
-  this.http.post("https://localhost:7212/api/ShoppingCarts/Payment", {books: newList})
-  .subscribe(res =>{
-    //daha sonra doldurulacak !
-  })
+    this.http.post("https://localhost:7212/api/ShoppingCarts/Payment", data)
+      .subscribe(res => {
+
+        callBack(res)
+      })
 
 
 
